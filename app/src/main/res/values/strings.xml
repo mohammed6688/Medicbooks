@@ -1,0 +1,129 @@
+<resources>
+
+    <!-- app name -->
+    <string name="app_name">استشر طبيبك</string>
+    <string name="tagline">طبيبك في جيبك !</string>
+    <string name="new_forum">طلب استشارة جديدة</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="send_button_label">ارسال</string>
+    <!-- app ad section -->
+    <string name="app_ad_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <!-- end of the ad section -->
+
+    <string name="facebook_application_id">131579631470810</string>
+    <string name="facebook_app_id">131579631470810</string>
+    <string name="fb_login_protocol_scheme">fb131579631470810</string>
+
+
+    <!-- app social site links section -->
+    <string name="facebook_url">facebook.com</string>
+    <string name="youtube_url">https://www.youtube.com/</string>
+    <string name="twitter_user_id">twitter://user?user_id=0000000000000xxxx</string> <!-- find your user id from here: http://gettwitterid.com/  -->
+    <string name="twitter_url">https://twitter.com/</string>
+    <string name="google_plus_url">https://plus.google.com/</string>
+
+    <!-- terms and conditions, privacy policy and faq url -->
+    <string name="terms_url">https://docs.google.com/document/d/1-UJjnUSd6f82gNvwZznTDiDSYfnHX2fYQpjpmBG_RNg/edit?usp=sharing</string>
+    <string name="privacy_url">https://docs.google.com/document/d/1Pqmb5MiBRw5qGOATYINmw0lEsdwJWO5SU0fOg4C_VcQ/edit?usp=sharing</string>
+    <string name="faq_url">https://docs.google.com/document/d/122500Gtso7Fj3VhMB5TNKaELZrfR95urBNJczI63DFQ/edit?usp=sharing</string>
+
+    <!-- about developer text  -->
+    <string name="developer_name">Mocomp</string>
+    <string name="developer_detail">Entrepreneur, Egypt</string>
+    <string name="developer_message">قدم استشارتك الطبية عبر تطبيقنا لتحصل على نصيحة طبية من اطباء اختصاصيين  حاصلين على شهادات مزاولة المهنة من المجالس الطبية العربية والعالمية المختلفة حسب التخصص المطلوب</string>
+
+    <!-- developer page: replace the developer id by yours -->
+    <string name="developer_page">market://dev?id=8603795184482579047</string>
+    <string name="alternate_dev_page">https://play.google.com/store/apps/dev?id=8603795184482579047</string>
+
+
+    <string name="site_menu_fav">استشارة طبيب</string>
+    <string name="history">استشارات سابقة</string>
+    <string name="fund">ادعمنا ماديا</string>
+    <string name="site_menu_copy">نسخ</string>
+    <string name="site_menu_share">مشاركة</string>
+    <string name="site_menu_delete_all">مسح الكل</string>
+    <string name="site_menu_read_article">اقرأ المقال</string>
+    <string name="site_menu_stop_reading">توقيف القرائة</string>
+    <string name="site_menu_copy_text">نسخ النص</string>
+    <string name="site_menu_share_post">شارك المنشور</string>
+    <string name="site_menu_download">تحميل الصورة</string>
+    <string name="site_menu_set">تعيين كخلفية</string>
+    <string name="delete_all_fav_item">Do you want to Delete all the Favorite items?</string>
+    <string name="delete_fav_item">Do you want to remove this item from the Favorite list?</string>
+    <string name="social">تواصل</string>
+    <string name="youtube">YouTube</string>
+    <string name="facebook">تواصل معنا</string>
+    <string name="twitter">تويتر</string>
+    <string name="google_plus">واتساب</string>
+
+
+    <string name="others">اخر</string>
+    <string name="about">عن التطبيق</string>
+    <string name="privacy">سياسة الخصوصية</string>
+    <string name="share">مشاركة</string>
+    <string name="rate">تقييم التطبيق</string>
+    <string name="more_app">More Apps</string>
+    <string name="settings">الاعدادات</string>
+    <string name="about_dev">عن التطبيق</string>
+    <string name="exit">خروج</string>
+    <!-- end of the site configuration section-->
+
+    <string name="search">بحث</string>
+
+    <string name="rate_title">قيم هذا التطبيق</string>
+    <string name="rate_message">إذا كنت تستمتع باستخدام هذا التطبيق ، فهل تمانع في قضاء بعض الوقت لتقييمه بـ 5 نجوم؟
+    لن يستغرق الأمر أكثر من دقيقة. شكرا لدعمكم!</string>
+    <string name="dialog_message">عزيزى العميل التطبيق مجاني اذا استفدت من الخدمة أو أعجبتك الفكرة يمكنك دعم التطبيق  ماديا بماتعتقد انه يتناسب معك ليستمر بالعمل</string>
+    <string name="rate_positive">قيم الان</string>
+    <string name="rate_remind_later">لاحقا</string>
+    <string name="rate_never">لا شكرا</string>
+    <string name="empty_result">لا توجد بيانات</string>
+    <string name="openDrawer">فتح القائمة</string>
+    <string name="closeDrawer">غلق القائمة</string>
+    <string name="tapAgain">اضغط مرة اخري للخروج</string>
+    <string name="permission_not_granted">Permission not granted!</string>
+    <string name="tts_wait_msg">This article will be read in short. Please wait a while...</string>
+    <string name="tts_install_msg">Please install Language package from here</string>
+    <string name="wallpaper_set">Wallpaper successfully set!</string>
+    <string name="wallpaper_set_failed">Failed to set Wallpaper!</string>
+    <string name="wallpaper_download">Image successfully downloaded!</string>
+    <string name="wallpaper_download_failed">Failed to download Image!</string>
+
+    <string name="share_text">Install App from:</string>
+    <string name="send_to">Send To: </string>
+    <string name="copy_to_clipboard">Copied to Clipboard!</string>
+    <string name="added_to_fav">This topic is added to Favorite list!</string>
+    <string name="removed_from_fav">This topic is removed from Favorite List!</string>
+    <string name="delete_all_notification">Do you want to Delete all the Notifications?</string>
+
+    <string name="close_prompt">هل تريد اغلاق التطبيق؟</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="failed">Failed</string>
+    <string name="no_internet">No internet connection is available!</string>
+
+
+    <string name="matches">matches</string>
+    <string name="placeholder">..</string>
+    <string name="notifications">اشعارات</string>
+    <string name="read_post">اقرأ المنشور</string>
+    <string name="notification_title">عنوان الاشعارات : </string>
+    <string name="notification_details">وصف الاشعار : </string>
+
+
+    <string name="pref_notification_title">التنبيهات</string>
+    <string name="pref_notification_summ">تشغيل/ايقاف التبيهات</string>
+    <string name="pref_zoom_title">Zoom Controller</string>
+    <string name="pref_zoom_summ">Enable zoom controller to zoom in/out pages</string>
+    <string name="pref_text_title">حجم النص</string>
+    <string name="select_size">اخطر حجم الخط</string>
+
+    <string name="small_text">صغير</string>
+    <string name="default_text">متوسط</string>
+    <string name="large_text">كبير</string>
+
+
+</resources>

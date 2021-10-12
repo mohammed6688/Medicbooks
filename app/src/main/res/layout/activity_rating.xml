@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.Rating">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/lay1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="تقييمك لسرعة رد الطبيب"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+            <RatingBar
+                android:id="@+id/respondRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/RatingBar"
+                android:saveEnabled="true"
+                android:numStars="5"/>
+
+            <TextView
+                android:id="@+id/lay2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="تقييمك لأسلوب الطبيب في الرد"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+            <RatingBar
+                android:id="@+id/respondTypeRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/RatingBar"
+                android:saveEnabled="true"
+                android:numStars="5"/>
+
+            <TextView
+                android:id="@+id/lay3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="تقييمك للخدمة بشكل عام"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+            <RatingBar
+                android:id="@+id/alloverRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/RatingBar"
+                android:saveEnabled="true"
+                android:numStars="5"/>
+
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="اضافة تعليق (اختياري)"/>
+
+            <Button
+                android:id="@+id/endRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/selector"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:text="انهاء التقييم"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg"/>
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/margin_55dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_55dp">
+
+        <ImageView
+            android:id="@+id/splashIcon"
+            android:layout_width="@dimen/margin_55dp"
+            android:layout_height="@dimen/margin_55dp"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/margin_6dp"
+            android:src="@mipmap/logo1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="15dp"
+            android:layout_toEndOf="@id/splashIcon"
+            android:orientation="vertical">
+
+            <com.mocomp.developer.medicbooks.view.PhenomenaTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:backgroundTint="#C5C5C5"
+                android:background="#C5C5C5"
+                android:layout_marginBottom="8dp"/>
+
+            <com.mocomp.developer.medicbooks.view.PhenomenaTextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tagline"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/lineView1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl_header"
+        android:background="@color/toolbar_boarder" />
+
+</RelativeLayout>

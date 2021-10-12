@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="380dp"
+    android:layout_height="380dp"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="#253B80"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="365dp"
+        android:layout_height="365dp"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        app:cardBackgroundColor="#169BD7"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/white">
+
+            <ImageButton
+                android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_close_24"/>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:src="@drawable/paypal"/>
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_message"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/payselector"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:clickable="true"
+                android:text="ادعمنا"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "295093034651",
+    "firebase_url": "https://doctor-consultation-7b569-default-rtdb.firebaseio.com",
+    "project_id": "doctor-consultation-7b569",
+    "storage_bucket": "doctor-consultation-7b569.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295093034651:android:cbf1626cc4f43ed446703e",
+        "android_client_info": {
+          "package_name": "com.mocomp.developer.medicbooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295093034651-civ6vtoh2sik7vqsp5c5cf50j06vmtm2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocomp.developer.medicbooks",
+            "certificate_hash": "ca28b9729eb91b0fcd5905dafd6a7613df20ae42"
+          }
+        },
+        {
+          "client_id": "295093034651-db9nbrl3qeo3uk55thrktrhgogdoj1fr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocomp.developer.medicbooks",
+            "certificate_hash": "028bf0fd44af5e79e7c327aea03e16e10bd9e019"
+          }
+        },
+        {
+          "client_id": "295093034651-ml1vgemi777s0hkbl8omvjdi17vq7lju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_8ayqz50YQHDnsm_6VB_MUBa8scu078"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295093034651-ml1vgemi777s0hkbl8omvjdi17vq7lju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295093034651:android:c4630948bed997ff46703e",
+        "android_client_info": {
+          "package_name": "com.mocomp.medicalupload"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295093034651-4ppf2evsf9t1ri8n5ijqg9pgq75vpsvi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocomp.medicalupload",
+            "certificate_hash": "ca28b9729eb91b0fcd5905dafd6a7613df20ae42"
+          }
+        },
+        {
+          "client_id": "295093034651-rpf14rfio0tn7cfarum42afgtsl477jv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mocomp.medicalupload",
+            "certificate_hash": "028bf0fd44af5e79e7c327aea03e16e10bd9e019"
+          }
+        },
+        {
+          "client_id": "295093034651-ml1vgemi777s0hkbl8omvjdi17vq7lju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_8ayqz50YQHDnsm_6VB_MUBa8scu078"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295093034651-ml1vgemi777s0hkbl8omvjdi17vq7lju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

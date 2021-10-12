@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorBackground">@color/colorAccent</item>
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/duskYellow</item>
+        <item name="colorControlActivated">@color/lightGrey</item>
+    </style>
+    <style name="MyTabStyle">
+        <item name="android:actionBarTabTextStyle">@style/MyTabTextStyle</item>
+    </style>
+
+    <style name="MyTabTextStyle" parent="@android:style/Widget.ActionBar.TabText">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+</resources>

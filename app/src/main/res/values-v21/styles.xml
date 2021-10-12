@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Difference bellow 21-->
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert" />
+    <!--Difference-->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/duskYellow</item>
+        <item name="colorControlActivated">@color/lightGrey</item>
+    </style>
+    <style name="MyTabStyle">
+        <item name="android:actionBarTabTextStyle">@style/MyTabTextStyle</item>
+    </style>
+
+    <style name="MyTabTextStyle" parent="@android:style/Widget.ActionBar.TabText">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+</resources>
