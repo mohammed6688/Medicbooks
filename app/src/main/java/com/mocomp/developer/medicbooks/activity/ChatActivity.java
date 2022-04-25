@@ -168,6 +168,7 @@ public class ChatActivity extends AppCompatActivity {
         //here check if today is friday or not
         //if not start in app billing code
 
+
         initializeVariable();
         initializeListeners();
     }
