@@ -165,9 +165,17 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //here check if today is friday or not
+        //if not start in app billing code
+
         initializeVariable();
         initializeListeners();
     }
+
+    private void paymentChecker(){
+
+    }
+
 
     private void initializeVariable() {
         forum = getIntent().getStringExtra("forum");

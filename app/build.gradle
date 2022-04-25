@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -68,5 +69,12 @@ dependencies {
 
     //implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
     implementation 'com.github.bashayerAlsalman:country-picker-android:1.3.0'
+
+    implementation 'com.android.billingclient:billing:4.1.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
 
