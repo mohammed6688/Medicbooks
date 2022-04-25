@@ -7,9 +7,9 @@
     <string name="sign_out">تسجيل الخروج</string>
     <string name="send_button_label">ارسال</string>
     <!-- app ad section -->
-    <string name="app_ad_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="app_ad_id">ca-app-pub-4235926441116012~9378342823</string>//ca-app-pub-3940256099942544~3347511713
+    <string name="banner_ad_unit_id">ca-app-pub-4235926441116012/4177987037</string>//ca-app-pub-3940256099942544/6300978111
+    <string name="interstitial_ad_unit_id">ca-app-pub-4235926441116012/8424693114</string>//ca-app-pub-3940256099942544/1033173712
     <!-- end of the ad section -->
 
     <string name="facebook_application_id">131579631470810</string>
@@ -76,7 +76,7 @@
     <string name="rate_title">قيم هذا التطبيق</string>
     <string name="rate_message">إذا كنت تستمتع باستخدام هذا التطبيق ، فهل تمانع في قضاء بعض الوقت لتقييمه بـ 5 نجوم؟
     لن يستغرق الأمر أكثر من دقيقة. شكرا لدعمكم!</string>
-    <string name="dialog_message">عزيزى العميل التطبيق مجاني اذا استفدت من الخدمة أو أعجبتك الفكرة يمكنك دعم التطبيق  ماديا بماتعتقد انه يتناسب معك ليستمر بالعمل</string>
+    <string name="dialog_message">عزيزي العميل التطبيق مجاني لو استفدت من الخدمة فلاتنسانا من دعائك ، كمايسعدنا نشرك للتطبيق ليستفيد منه الاخرين مع تقييمك الجيد للخدمة</string>
     <string name="rate_positive">قيم الان</string>
     <string name="rate_remind_later">لاحقا</string>
     <string name="rate_never">لا شكرا</string>
@@ -124,6 +124,7 @@
     <string name="small_text">صغير</string>
     <string name="default_text">متوسط</string>
     <string name="large_text">كبير</string>
+    <string name="waitTxt">شكرا  لتقديم استشارتك وثقتك.. فضلا امنحنا بعض الوقت ليتمكن اطباؤنا من مراجعة حالتك والرد عليك قريبا 💌</string>
 
 
 </resources>

@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +68,7 @@ import com.mocomp.developer.medicbooks.notification.Data;
 import com.mocomp.developer.medicbooks.notification.MyResponse;
 import com.mocomp.developer.medicbooks.notification.Sender;
 import com.mocomp.developer.medicbooks.notification.Token;
+import com.mocomp.developer.medicbooks.utility.AdsUtilities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -226,6 +228,8 @@ public class ChatActivity extends AppCompatActivity {
             pending.setVisibility(View.GONE);
             profile_image.setVisibility(View.GONE);
         }
+
+        AdsUtilities.getInstance(ChatActivity.this).showBannerAd((AdView) findViewById(R.id.adsView));
 
     }
 
@@ -424,18 +428,20 @@ public class ChatActivity extends AppCompatActivity {
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(user.getUid())) {
-                    Log.e("log","no child");
-                }else {
-                    if (!condition){
-                        Intent go = new Intent(ChatActivity.this,ForumActivity.class);
-                        go.putExtra("autoOpened",true);
-                        go.putExtra("userId",user.getUid());
-                        startActivity(go);
-                    }else {
-                        sendForum();
-                    }
+                if (user!=null) {
+                    if (snapshot.hasChild(user.getUid())) {
+                        Log.e("log", "no child");
+                    } else {
+                        if (!condition) {
+                            Intent go = new Intent(ChatActivity.this, ForumActivity.class);
+                            go.putExtra("autoOpened", true);
+                            go.putExtra("userId", user.getUid());
+                            startActivity(go);
+                        } else {
+                            sendForum();
+                        }
 
+                    }
                 }
             }
             @Override
@@ -452,6 +458,7 @@ public class ChatActivity extends AppCompatActivity {
             mMessagesDatabaseReference.push().setValue(friendlyMessage);
             sendDoctorNotificationsHelper();
             condition=false;
+            AdsUtilities.getInstance(ChatActivity.this).loadFullScreenAd(ChatActivity.this);
         }
     }
 
@@ -693,7 +700,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private String getDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String currentDateAndTime = sdf.format(new Date());
         return currentDateAndTime;
     }

@@ -352,7 +352,7 @@
                 android:background="@drawable/rounded_edittext"
                 android:layout_margin="20dp"
                 android:fontFamily="@font/cairo"
-                android:hint="وصف الشكوي"/>
+                android:hint="وصف الشكوي(بالتفصيل)"/>
             <EditText
                 android:id="@+id/probleminc"
                 android:padding="10dp"
@@ -361,7 +361,7 @@
                 android:background="@drawable/rounded_edittext"
                 android:layout_margin="20dp"
                 android:fontFamily="@font/cairo"
-                android:hint="عوامل تزيد الشكوي"/>
+                android:hint="عوامل تزيد الشكوي(اختياري)"/>
             <EditText
                 android:id="@+id/problemdec"
                 android:padding="10dp"
@@ -370,7 +370,7 @@
                 android:background="@drawable/rounded_edittext"
                 android:layout_margin="20dp"
                 android:fontFamily="@font/cairo"
-                android:hint="عوامل تخفف الشكوي"/>
+                android:hint="عوامل تخفف الشكوي(اختياري)"/>
             <EditText
                 android:id="@+id/problemPeriod"
                 android:padding="10dp"

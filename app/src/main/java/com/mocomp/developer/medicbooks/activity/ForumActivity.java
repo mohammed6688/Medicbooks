@@ -165,8 +165,9 @@ public class ForumActivity extends AppCompatActivity {
 
         String message = submitorder(message1 , message2,message3 , message4 , message5,message6,message7,message8,message15,message16,message17);
 
-        Log.e("message",message);
+
         if (message != null){
+            Log.e("message",message);
             Intent go = new Intent(ForumActivity.this,ChatActivity.class);
             go.putExtra("forum",message);
             go.putExtra("condition",true);

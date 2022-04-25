@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.mocomp.developer.medicbooks.activity.MainActivity;
 import com.mocomp.developer.medicbooks.activity.Payments;
+import com.mocomp.developer.medicbooks.utility.AppUtilities;
 
 public class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
@@ -45,8 +46,9 @@ public class CustomDialogClass extends Dialog implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_no:
-                Intent pay = new Intent(c, Payments.class);
-                c.startActivity(pay);
+                AppUtilities.rateThisApp(c);
+                /*Intent pay = new Intent(c, Payments.class);
+                c.startActivity(pay);*/
                 c.finish();
                 break;
             case R.id.exit:
