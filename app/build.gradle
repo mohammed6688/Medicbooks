@@ -6,7 +6,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         relase {
-            storeFile file('F:\\courses\\android\\mocomp.jks')
+            storeFile file('D:\\android\\IMP\\mocomp.jks')
             storePassword '1502654'
             keyAlias 'key0'
             keyPassword '1502654'
@@ -73,6 +73,10 @@ dependencies {
     implementation 'com.android.billingclient:billing:4.1.0'
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //trying to fix crash
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
+    // adding library to handle google pay billing
+    implementation "com.android.billingclient:billing:4.1.0"
 }
 repositories {
     mavenCentral()

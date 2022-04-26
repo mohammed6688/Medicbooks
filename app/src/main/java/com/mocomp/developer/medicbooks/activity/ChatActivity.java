@@ -1,22 +1,13 @@
 package com.mocomp.developer.medicbooks.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -30,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,6 +30,25 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.Continuation;
@@ -130,6 +141,11 @@ public class ChatActivity extends AppCompatActivity {
     private List<String>list = new ArrayList<>();
     private CircleImageView profile_image;
 
+    //Billing Client For Billing
+    BillingClient billingClient;
+    private Activity activity ;
+    private SkuDetails itemInfo;
+
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -159,16 +175,49 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity =this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("patientCondition"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // Creating Billing Logic
+        billingClient=BillingClient.newBuilder(this)
+                                    .enablePendingPurchases()
+                                    .setListener(new PurchasesUpdatedListener() {
+                                        @Override
+                                        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                                            if (billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK &&
+                                            list != null){
+                                                for (Purchase purchase: list){
+                                                    if (purchase.getPurchaseState()== Purchase.PurchaseState.PURCHASED &&
+                                                         !purchase.isAcknowledged()){
+                                                        ConsumeParams consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
+                                                    billingClient.consumeAsync(
+                                                            consumeParams,
+                                                            new ConsumeResponseListener() {
+                                                                @Override
+                                                                public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
+                                                                    if(billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK){
+                                                                        //now we are ok to proceed
+                                                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+                                                                        SharedPreferences.Editor editor = pref.edit();
+                                                                        editor.putBoolean("ACK", true);
+                                                                        editor.commit();
+                                                                    }
+                                                                }
+                                                            }
+                                                    );
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    })
+                .build();
+        connectToGooglePlayBilling();
         //here check if today is friday or not
         //if not start in app billing code
-
-
         initializeVariable();
         initializeListeners();
     }
@@ -442,10 +491,18 @@ public class ChatActivity extends AppCompatActivity {
                         Log.e("log", "no child");
                     } else {
                         if (!condition) {
-                            Intent go = new Intent(ChatActivity.this, ForumActivity.class);
-                            go.putExtra("autoOpened", true);
-                            go.putExtra("userId", user.getUid());
-                            startActivity(go);
+                            //Show the payment Dialogue First
+                            if (isFriDay() || askForPayment() ) {
+                                Intent go = new Intent(ChatActivity.this, ForumActivity.class);
+                                go.putExtra("autoOpened", true);
+                                go.putExtra("userId", user.getUid());
+                                startActivity(go);
+                            }else {
+                                showCustomDialog();
+//                                Intent go = new Intent(ChatActivity.this , ChooserActivity.class);
+//                                startActivity(go);
+//                                finish();
+                            }
                         } else {
                             sendForum();
                         }
@@ -468,6 +525,12 @@ public class ChatActivity extends AppCompatActivity {
             sendDoctorNotificationsHelper();
             condition=false;
             AdsUtilities.getInstance(ChatActivity.this).loadFullScreenAd(ChatActivity.this);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+            SharedPreferences.Editor editor =pref.edit();
+            if (pref.getBoolean("ACK",false)){
+                editor.putBoolean("ACK",false);
+                editor.apply();
+            }
         }
     }
 
@@ -713,12 +776,113 @@ public class ChatActivity extends AppCompatActivity {
         String currentDateAndTime = sdf.format(new Date());
         return currentDateAndTime;
     }
-
+    //get local day of the week
+    private String getCurrentDay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        Date d = new Date();
+        String dayOfTheWeek = sdf.format(d);
+        return dayOfTheWeek;
+    }
+    //End of getCurrentDay
+    //Check for FriDay
+    private Boolean isFriDay(){
+        if (getCurrentDay().equalsIgnoreCase("Friday")){
+            return true;
+        }
+        else return false;
+    }
+    //End of Checking FriDay
+    //Showing Dialogue of of requesting Payment
+    private boolean askForPayment(){
+     //   showCustomDialog();
+         SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+         return pref.getBoolean("ACK",false);
+    }
     private void detachDatabaseReadListener(){
         if (mChildEventListener != null){
             friendlyMessages.clear();
             mMessagesDatabaseReference.removeEventListener(mChildEventListener);
             mChildEventListener = null ;
         }
+    }
+    // function to show the dialog
+   private void showCustomDialog() {
+        final Dialog dialog = new Dialog(ChatActivity.this);
+        //We have added a title in the custom layout. So let's disable the default title.
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //The user will be able to cancel the dialog bu clicking anywhere outside the dialog.
+        dialog.setCancelable(false);
+        //Mention the name of the layout of your custom dialog.
+        dialog.setContentView(R.layout.ask_for_payment_before_porceed);
+
+        //Initializing the views of the dialog.
+        final Button accept = dialog.findViewById(R.id.Accept_transaction);
+        final Button deny = dialog.findViewById(R.id.Cancel_transaction);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //Add logic here
+                Toast.makeText(getApplicationContext(),"customer has accepted",Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+//                Intent go = new Intent(ChatActivity.this, ForumActivity.class);
+//                go.putExtra("autoOpened", true);
+//                go.putExtra("userId", user.getUid());
+//                startActivity(go);
+                billingClient.launchBillingFlow(
+                        activity,
+                        BillingFlowParams.newBuilder().setSkuDetails(itemInfo).build()
+                );
+            }
+        });
+        deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent go = new Intent(ChatActivity.this , ChooserActivity.class);
+                startActivity(go);
+                finish();
+            }
+        });
+
+        dialog.show();
+    }
+    //Method to connect to google Play billing
+    private void connectToGooglePlayBilling(){
+        billingClient.startConnection(
+                new BillingClientStateListener() {
+                    @Override
+                    public void onBillingServiceDisconnected() {
+                        connectToGooglePlayBilling();
+                    }
+
+                    @Override
+                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                    if (billingResult.getResponseCode()== BillingClient.BillingResponseCode.OK){
+                        getServiceDetails();
+                    }
+                    }
+                }
+        );
+    }
+    private void getServiceDetails(){
+        List <String> productIds = new ArrayList<>();
+        productIds.add("Billing_Service_5");
+        SkuDetailsParams getProductsDetailsQuery = SkuDetailsParams
+                                    .newBuilder()
+                                    .setSkusList(productIds)
+                                    .setType(BillingClient.SkuType.INAPP)
+                                    .build();
+        billingClient.querySkuDetailsAsync(
+                getProductsDetailsQuery,
+                new SkuDetailsResponseListener() {
+                    @Override
+                    public void onSkuDetailsResponse(@NonNull BillingResult billingResult, @Nullable List<SkuDetails> list) {
+                        if (billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK &&
+                             list != null ){
+                          itemInfo =list.get(0);
+                        }
+                    }
+                }
+        );
     }
 }

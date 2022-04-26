@@ -3,6 +3,43 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_about_dev.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_chat.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_chooser.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_confirmation.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_custom_url.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_details.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_forum.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_history.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_history_chat.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_image_slider.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_intro.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_item_list.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_main.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_notification.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_notification_details.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_payments.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_rating.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_settings.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/activity_splash.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/ask_for_payment_before_porceed.xml" value="0.33" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/content_banner_ad.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/content_main.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/content_notification.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/content_notification_details.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/dialog.xml" value="0.33" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/fragment_custom_dialog.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/item_home_recycler.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/item_message_left.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/item_message_right.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/item_notification.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/layout_screen.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/layout_video_view.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/nav_header_main.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/sec_card_item.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/toolbar.xml" value="0.1675925925925926" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/toolbar_main.xml" value="0.159375" />
+        <entry key="..\:/android/NewerVersion/Medicbooks/app/src/main/res/layout/view_common_loader.xml" value="0.1675925925925926" />
         <entry key="..\:/courses/Developed Apps/Medicbooks/app/src/main/res/drawable/btn_gradient_style.xml" value="0.28974358974358977" />
         <entry key="..\:/courses/Developed Apps/Medicbooks/app/src/main/res/drawable/indicator_default.xml" value="0.28974358974358977" />
         <entry key="..\:/courses/Developed Apps/Medicbooks/app/src/main/res/drawable/indicator_selected.xml" value="0.28974358974358977" />
@@ -24,7 +61,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
