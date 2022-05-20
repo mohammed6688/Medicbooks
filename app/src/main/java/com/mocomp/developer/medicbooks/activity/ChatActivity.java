@@ -96,86 +96,80 @@ import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
+    public static final String ANONYMOUS = "anonymous";
+    public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
+    public static final int RC_SIGN_IN = 1;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final int RC_PHOTO_PICKER = 2;
+    private static final int RC_AUDIO_PICKER = 3;
+    APIService apiService;
+    boolean notify = false;
+    boolean consultationEnd;
+    //Billing Client For Billing
+    BillingClient billingClient;
     private FirebaseStorage mfirebaseStorage;
     private StorageReference mChatphotosStorageRerances;
     private StorageReference mChataudiosStorageRerances;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
-
     private FirebaseUser user;
     private DatabaseReference mCreateUserRefrance;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-
-    public static final String ANONYMOUS = "anonymous";
-    public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
-    public static final int RC_SIGN_IN = 1;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-
-    APIService apiService;
+    private final String[] permissions = {Manifest.permission.RECORD_AUDIO};
     private ProgressBar mProgressBar;
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
     private FloatingActionButton mSendButton;
     private Button record;
     private String mUsername;
-    private static final int RC_PHOTO_PICKER =  2;
-    private static final int RC_AUDIO_PICKER =  3;
-
     private MessageAdapter adapter;
-    boolean notify = false;
     private boolean condition;
-    private boolean gate=false;
+    private boolean gate = false;
     private TextView pending;
     private String forum;
     private String doctorid;
     private Button rateus;
     private RecyclerView recyclerView;
     private LinearLayout linearlayout;
-    private LinearLayout  ratingLay;
+    private LinearLayout ratingLay;
     private List<FriendlyMessage> friendlyMessages;
     private CustomDialogClass errorDialog;
-    boolean consultationEnd;
-    private List<String>list = new ArrayList<>();
+    private final List<String> list = new ArrayList<>();
     private CircleImageView profile_image;
-
-    //Billing Client For Billing
-    BillingClient billingClient;
-    private Activity activity ;
-    private SkuDetails itemInfo;
-
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Typeface typeface = Typeface.createFromAsset(getAssets(), "Cairo-Regular.ttf");
 
-            boolean condition = intent.getBooleanExtra("condition",false);
-            consultationEnd = intent.getBooleanExtra("consultationEnd",false);
+            boolean condition = intent.getBooleanExtra("condition", false);
+            consultationEnd = intent.getBooleanExtra("consultationEnd", false);
             doctorid = intent.getStringExtra("doctorid");
 
-            if (condition){               //if true then patient is accepted
-                MyApplication.setPreferencesBoolean("Accepted",true);
+            if (condition) {               //if true then patient is accepted
+                MyApplication.setPreferencesBoolean("Accepted", true);
                 linearlayout.setVisibility(View.VISIBLE);
                 pending.setVisibility(View.GONE);
                 profile_image.setVisibility(View.GONE);
-            }else {                       //patient is pending
-                MyApplication.setPreferencesBoolean("Accepted",false);
+            } else {                       //patient is pending
+                MyApplication.setPreferencesBoolean("Accepted", false);
                 linearlayout.setVisibility(View.INVISIBLE);
                 profile_image.setVisibility(View.VISIBLE);
                 pending.setVisibility(View.VISIBLE);
                 pending.setTypeface(typeface);
             }
-            if (consultationEnd){
+            if (consultationEnd) {
                 consultationEnding();
             }
         }
     };
+    private Activity activity;
+    private SkuDetails itemInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity =this;
+        activity = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("patientCondition"));
 
@@ -183,37 +177,37 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // Creating Billing Logic
-        billingClient=BillingClient.newBuilder(this)
-                                    .enablePendingPurchases()
-                                    .setListener(new PurchasesUpdatedListener() {
-                                        @Override
-                                        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-                                            if (billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK &&
-                                            list != null){
-                                                for (Purchase purchase: list){
-                                                    if (purchase.getPurchaseState()== Purchase.PurchaseState.PURCHASED &&
-                                                         !purchase.isAcknowledged()){
-                                                        ConsumeParams consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
-                                                    billingClient.consumeAsync(
-                                                            consumeParams,
-                                                            new ConsumeResponseListener() {
-                                                                @Override
-                                                                public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                                                                    if(billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK){
-                                                                        //now we are ok to proceed
-                                                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
-                                                                        SharedPreferences.Editor editor = pref.edit();
-                                                                        editor.putBoolean("ACK", true);
-                                                                        editor.commit();
-                                                                    }
-                                                                }
-                                                            }
-                                                    );
+        billingClient = BillingClient.newBuilder(this)
+                .enablePendingPurchases()
+                .setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
+                                list != null) {
+                            for (Purchase purchase : list) {
+                                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED &&
+                                        !purchase.isAcknowledged()) {
+                                    ConsumeParams consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
+                                    billingClient.consumeAsync(
+                                            consumeParams,
+                                            new ConsumeResponseListener() {
+                                                @Override
+                                                public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
+                                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                        //now we are ok to proceed
+//                                                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+//                                                                        SharedPreferences.Editor editor = pref.edit();
+                                                        MyApplication.setPreferencesBoolean("ACK", true);
+
                                                     }
                                                 }
                                             }
-                                        }
-                                    })
+                                    );
+                                }
+                            }
+                        }
+                    }
+                })
                 .build();
         connectToGooglePlayBilling();
         //here check if today is friday or not
@@ -222,14 +216,14 @@ public class ChatActivity extends AppCompatActivity {
         initializeListeners();
     }
 
-    private void paymentChecker(){
+    private void paymentChecker() {
 
     }
 
 
     private void initializeVariable() {
         forum = getIntent().getStringExtra("forum");
-        condition = getIntent().getBooleanExtra("condition",false);
+        condition = getIntent().getBooleanExtra("condition", false);
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -239,23 +233,23 @@ public class ChatActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent go = new Intent(ChatActivity.this,ChooserActivity.class);
+                Intent go = new Intent(ChatActivity.this, ChooserActivity.class);
                 startActivity(go);
             }
         });
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         mUsername = ANONYMOUS;
         // Initialize references to views
-        pending=findViewById(R.id.pending);
-        profile_image=findViewById(R.id.profile_image);
-        linearlayout= findViewById(R.id.linearLayout);
+        pending = findViewById(R.id.pending);
+        profile_image = findViewById(R.id.profile_image);
+        linearlayout = findViewById(R.id.linearLayout);
         //toolbarTitle=findViewById(R.id.toolbarTitle);
-        rateus=findViewById(R.id.rateUs);
+        rateus = findViewById(R.id.rateUs);
         mProgressBar = findViewById(R.id.progressBar);
         mPhotoPickerButton = findViewById(R.id.photoPickerButton);
-        ratingLay=findViewById(R.id.ratingLay);
+        ratingLay = findViewById(R.id.ratingLay);
 
-        mMessageEditText =  findViewById(R.id.messageEditText);
+        mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         record = findViewById(R.id.record);
 
@@ -282,12 +276,12 @@ public class ChatActivity extends AppCompatActivity {
         // Initialize message ListView and its adapter
         friendlyMessages = new ArrayList<>();
         ratingLay.setVisibility(View.GONE);
-        if (MyApplication.getPrefranceDataBoolean("Accepted")){
+        if (MyApplication.getPrefranceDataBoolean("Accepted")) {
             pending.setVisibility(View.GONE);
             profile_image.setVisibility(View.GONE);
         }
 
-        AdsUtilities.getInstance(ChatActivity.this).showBannerAd((AdView) findViewById(R.id.adsView));
+        AdsUtilities.getInstance(ChatActivity.this).showBannerAd(findViewById(R.id.adsView));
 
     }
 
@@ -317,9 +311,9 @@ public class ChatActivity extends AppCompatActivity {
         rateus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent go =new Intent(ChatActivity.this,Rating.class);
-                go.putExtra("doctorId",doctorid);
-                go.putExtra("patientId",user.getUid());
+                Intent go = new Intent(ChatActivity.this, Rating.class);
+                go.putExtra("doctorId", doctorid);
+                go.putExtra("patientId", user.getUid());
                 startActivity(go);
             }
         });
@@ -327,29 +321,28 @@ public class ChatActivity extends AppCompatActivity {
         // Enable Send button when there's text to send
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    mSendButton.setEnabled(true);
-                } else {
-                    mSendButton.setEnabled(false);
-                }
+                mSendButton.setEnabled(charSequence.toString().trim().length() > 0);
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mMessageEditText.getText().toString().equals("")){
-                    FriendlyMessage friendlyMessage = new FriendlyMessage("",user.getUid(),mMessageEditText.getText().toString(), mUsername, null,null,false,false,getDate());
+                if (!mMessageEditText.getText().toString().equals("")) {
+                    FriendlyMessage friendlyMessage = new FriendlyMessage("", user.getUid(), mMessageEditText.getText().toString(), mUsername, null, null, false, false, getDate());
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
                     notify = true;
-                    sendNotification(mMessageEditText.getText().toString(),doctorid);
+                    sendNotification(mMessageEditText.getText().toString(), doctorid);
                     mMessageEditText.setText("");  // Clear input box
                 }
             }
@@ -361,7 +354,7 @@ public class ChatActivity extends AppCompatActivity {
                 user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    MyApplication.setPreferencesBoolean("userOnline",true);
+                    MyApplication.setPreferencesBoolean("userOnline", true);
                     //startChooser();                           //view chooser contain previous consultation or new one
                     onSignedInInitialize(user.getDisplayName());
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages").child(user.getUid());
@@ -395,15 +388,14 @@ public class ChatActivity extends AppCompatActivity {
 
     private void consultationEnding() {
 
-        if (!gate){
-            errorDialog=new CustomDialogClass(ChatActivity.this);
-            if(!((Activity) ChatActivity.this).isFinishing())
-            {
+        if (!gate) {
+            errorDialog = new CustomDialogClass(ChatActivity.this);
+            if (!ChatActivity.this.isFinishing()) {
                 errorDialog.show();
             }
             errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-            gate=true;
+            gate = true;
         }
         linearlayout.setVisibility(View.INVISIBLE);
         pending.setVisibility(View.GONE);
@@ -411,21 +403,21 @@ public class ChatActivity extends AppCompatActivity {
         //ratingLay.setVisibility(View.VISIBLE);
     }
 
-    private void updateToken(String token){
+    private void updateToken(String token) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
         reference.child(user.getUid()).setValue(token1);
     }
 
-    private void currentUser(String userid){
+    private void currentUser(String userid) {
         SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
         editor.putString("currentuser", userid);
         editor.apply();
     }
 
     private void createUser() {
-        if (mUsername==null||mUsername.equals("")){
-            mUsername=user.getPhoneNumber();
+        if (mUsername == null || mUsername.equals("")) {
+            mUsername = user.getPhoneNumber();
         }
         mCreateUserRefrance = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
         HashMap<String, String> hashMap = new HashMap<>();
@@ -445,9 +437,9 @@ public class ChatActivity extends AppCompatActivity {
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Token token = snapshot.getValue(Token.class);
-                        Data data = new Data(user.getUid(), R.mipmap.logo1, mUsername+": "+message, "رسالة جديدة",
+                        Data data = new Data(user.getUid(), R.mipmap.logo1, mUsername + ": " + message, "رسالة جديدة",
                                 doctorid);
 
                         Sender sender = new Sender(data, token.getToken());
@@ -456,8 +448,8 @@ public class ChatActivity extends AppCompatActivity {
                                 .enqueue(new Callback<MyResponse>() {
                                     @Override
                                     public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                        if (response.code() == 200){
-                                            if (response.body().success != 1){
+                                        if (response.code() == 200) {
+                                            if (response.body().success != 1) {
                                                 //Toast.makeText(ChatActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
@@ -481,23 +473,23 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    private void checkForum(){
+    private void checkForum() {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("messages");
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (user!=null) {
+                if (user != null) {
                     if (snapshot.hasChild(user.getUid())) {
                         Log.e("log", "no child");
                     } else {
                         if (!condition) {
                             //Show the payment Dialogue First
-                            if (isFriDay() || askForPayment() ) {
+                            if (isFriDay() || askForPayment()) {
                                 Intent go = new Intent(ChatActivity.this, ForumActivity.class);
                                 go.putExtra("autoOpened", true);
                                 go.putExtra("userId", user.getUid());
                                 startActivity(go);
-                            }else {
+                            } else {
                                 showCustomDialog();
 //                                Intent go = new Intent(ChatActivity.this , ChooserActivity.class);
 //                                startActivity(go);
@@ -510,27 +502,33 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 
     private void sendForum() {
-        if (condition){
+        if (condition) {
             AddToHistory(user.getUid());
             friendlyMessages.clear();
             deleteOldForum();
-            FriendlyMessage friendlyMessage = new FriendlyMessage("",user.getUid(),forum.toString(), mUsername, null,null,false,false,getDate());
+            FriendlyMessage friendlyMessage = new FriendlyMessage("", user.getUid(), forum, mUsername, null, null, false, false, getDate());
             mMessagesDatabaseReference.push().setValue(friendlyMessage);
             sendDoctorNotificationsHelper();
-            condition=false;
+            condition = false;
             AdsUtilities.getInstance(ChatActivity.this).loadFullScreenAd(ChatActivity.this);
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
-            SharedPreferences.Editor editor =pref.edit();
-            if (pref.getBoolean("ACK",false)){
-                editor.putBoolean("ACK",false);
-                editor.apply();
-            }
+//            SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = pref.edit();
+//            if (pref.getBoolean("ACK", false)) {
+//                editor.putBoolean("ACK", false);
+//                editor.apply();
+//            }
+           if (MyApplication.getPrefranceDataBoolean("ACK") ){
+               MyApplication.setPreferencesBoolean("ACK",false);
+           }
+
         }
     }
 
@@ -540,23 +538,25 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     list.add(snapshot.getKey());
                 }
                 sendDoctorNotifications(list);
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
     }
 
     private void sendDoctorNotifications(List<String> DocotrIds) {
         String doctorid;
         int loop;
-        for (loop = 0;loop<DocotrIds.size();loop++){
+        for (loop = 0; loop < DocotrIds.size(); loop++) {
             doctorid = DocotrIds.get(loop);
-            notify=true;
-            sendNotification("هناك طلب استشارة جديد",doctorid);
+            notify = true;
+            sendNotification("هناك طلب استشارة جديد", doctorid);
         }
     }
 
@@ -568,7 +568,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Signed In", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
@@ -576,7 +576,7 @@ public class ChatActivity extends AppCompatActivity {
                 finish();
             }
         }
-        if (requestCode==RC_PHOTO_PICKER && resultCode==RESULT_OK){
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             Toast.makeText(this, "uploading PHOTO...", Toast.LENGTH_SHORT).show();
             Uri selctimageuri = data.getData();
             final StorageReference photoref = mChatphotosStorageRerances.child(selctimageuri.getLastPathSegment());
@@ -597,10 +597,10 @@ public class ChatActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(ChatActivity.this, "photo uploaded", Toast.LENGTH_SHORT).show();
                         Uri downloadUri = task.getResult();
-                        FriendlyMessage friendlyMessage = new FriendlyMessage("",user.getUid(),null, mUsername, downloadUri.toString(),null,false,false,getDate());
+                        FriendlyMessage friendlyMessage = new FriendlyMessage("", user.getUid(), null, mUsername, downloadUri.toString(), null, false, false, getDate());
                         mMessagesDatabaseReference.push().setValue(friendlyMessage);
                         notify = true;
-                        sendNotification("صورة",doctorid);
+                        sendNotification("صورة", doctorid);
 
                     } else {
                         // Handle failures
@@ -608,7 +608,8 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
             });
-        }if (requestCode==RC_AUDIO_PICKER && resultCode==RESULT_OK){
+        }
+        if (requestCode == RC_AUDIO_PICKER && resultCode == RESULT_OK) {
             Toast.makeText(this, "uploading AUDIO...", Toast.LENGTH_SHORT).show();
             Uri selctimageuri = data.getData();
             final StorageReference photoref = mChataudiosStorageRerances.child(selctimageuri.getLastPathSegment());
@@ -629,10 +630,10 @@ public class ChatActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(ChatActivity.this, "audio uploaded", Toast.LENGTH_SHORT).show();
                         Uri downloadUri = task.getResult();
-                        FriendlyMessage friendlyMessage = new FriendlyMessage("",user.getUid(),null, mUsername, null,downloadUri.toString(),false,false,getDate());
+                        FriendlyMessage friendlyMessage = new FriendlyMessage("", user.getUid(), null, mUsername, null, downloadUri.toString(), false, false, getDate());
                         mMessagesDatabaseReference.push().setValue(friendlyMessage);
                         notify = true;
-                        sendNotification("تسجيل صوتي",doctorid);
+                        sendNotification("تسجيل صوتي", doctorid);
 
                     } else {
                         // Handle failures
@@ -653,15 +654,15 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
                 return true;
             case R.id.new_forum:
-                if (consultationEnd){      //consultation ended from doctor
+                if (consultationEnd) {      //consultation ended from doctor
                     deleteOldForum();
                     checkForum();
-                }else {
+                } else {
                     //AddToHistory(user.getUid());
                     //deleteOldForum();
                     //checkForum();
@@ -674,34 +675,36 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void launchForum(boolean state) {
-        Intent go = new Intent(ChatActivity.this,ForumActivity.class);
-        go.putExtra("autoOpened",state);
+        Intent go = new Intent(ChatActivity.this, ForumActivity.class);
+        go.putExtra("autoOpened", state);
         startActivity(go);
     }
 
     private void AddToHistory(String userId) {
 
-        int loop ;
+        int loop;
         DatabaseReference uniqueKey;
 
-        if (friendlyMessages.size()!=0){
+        if (friendlyMessages.size() != 0) {
             uniqueKey = FirebaseDatabase.getInstance().getReference().child("PatientHistory").child(userId).push();
 
-            for ( loop = 0;loop<friendlyMessages.size();loop++) {
+            for (loop = 0; loop < friendlyMessages.size(); loop++) {
                 final FriendlyMessage item = friendlyMessages.get(loop);
-                doconfirmation(item,uniqueKey);
+                doconfirmation(item, uniqueKey);
             }
         }
 
     }
-    private void doconfirmation(FriendlyMessage user,DatabaseReference random) {
-        FriendlyMessage friendlyMessage = new FriendlyMessage(user.getDoctorid(), user.getUserid(), user.getText(),user.getName(),user.getPhotoUrl(),user.getRecordUrl(),user.getChecked(),user.getConsultationEnd(),getDate());
+
+    private void doconfirmation(FriendlyMessage user, DatabaseReference random) {
+        FriendlyMessage friendlyMessage = new FriendlyMessage(user.getDoctorid(), user.getUserid(), user.getText(), user.getName(), user.getPhotoUrl(), user.getRecordUrl(), user.getChecked(), user.getConsultationEnd(), getDate());
         random.push().setValue(friendlyMessage);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent go = new Intent(ChatActivity.this , ChooserActivity.class);
+        Intent go = new Intent(ChatActivity.this, ChooserActivity.class);
         startActivity(go);
         finish();
     }
@@ -710,7 +713,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //status("online");
-        MyApplication.setPreferencesBoolean("userOnline",true);
+        MyApplication.setPreferencesBoolean("userOnline", true);
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
@@ -721,23 +724,23 @@ public class ChatActivity extends AppCompatActivity {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
         //status("offline");
-        MyApplication.setPreferencesBoolean("userOnline",false);
+        MyApplication.setPreferencesBoolean("userOnline", false);
         detachDatabaseReadListener();
     }
 
-    private void onSignedInInitialize (String username){
-        mUsername=username;
+    private void onSignedInInitialize(String username) {
+        mUsername = username;
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages").child(user.getUid());
         attachDatabaseReadListener();
 
     }
 
-    private void onSignedOutCleanup (){
+    private void onSignedOutCleanup() {
         mUsername = ANONYMOUS;
     }
 
-    private void attachDatabaseReadListener(){
-        if (mChildEventListener ==null) {
+    private void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -745,68 +748,76 @@ public class ChatActivity extends AppCompatActivity {
                     friendlyMessages.add(friendlyMessage);
 
                     Log.e("size", String.valueOf(friendlyMessages.size()));
-                    if (friendlyMessages.size()==0){
+                    if (friendlyMessages.size() == 0) {
                         launchForum(true);
-                    }else {
+                    } else {
                         sendForum();
                     }
-                    adapter = new MessageAdapter(ChatActivity.this,friendlyMessages);
+                    adapter = new MessageAdapter(ChatActivity.this, friendlyMessages);
                     recyclerView.setAdapter(adapter);
                     mProgressBar.setVisibility(ProgressBar.GONE);
 
                 }
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
 
                 @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
 
                 @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
             };
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
     }
 
-    private String getDate(){
+    private String getDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String currentDateAndTime = sdf.format(new Date());
         return currentDateAndTime;
     }
+
     //get local day of the week
-    private String getCurrentDay(){
+    private String getCurrentDay() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
         Date d = new Date();
         String dayOfTheWeek = sdf.format(d);
         return dayOfTheWeek;
     }
+
     //End of getCurrentDay
     //Check for FriDay
-    private Boolean isFriDay(){
-        if (getCurrentDay().equalsIgnoreCase("Friday")){
-            return true;
-        }
-        else return false;
+    private Boolean isFriDay() {
+        return getCurrentDay().equalsIgnoreCase("Friday");
     }
+
     //End of Checking FriDay
     //Showing Dialogue of of requesting Payment
-    private boolean askForPayment(){
-     //   showCustomDialog();
-         SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
-         return pref.getBoolean("ACK",false);
+    private boolean askForPayment() {
+        //   showCustomDialog();
+      //  SharedPreferences pref = getApplicationContext().getSharedPreferences("Acknowledged", MODE_PRIVATE);
+      //  return pref.getBoolean("ACK", false);
+        return MyApplication.getPrefranceDataBoolean("ACK");
     }
-    private void detachDatabaseReadListener(){
-        if (mChildEventListener != null){
+
+    private void detachDatabaseReadListener() {
+        if (mChildEventListener != null) {
             friendlyMessages.clear();
             mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-            mChildEventListener = null ;
+            mChildEventListener = null;
         }
     }
+
     // function to show the dialog
-   private void showCustomDialog() {
+    private void showCustomDialog() {
         final Dialog dialog = new Dialog(ChatActivity.this);
         //We have added a title in the custom layout. So let's disable the default title.
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -821,8 +832,8 @@ public class ChatActivity extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //Add logic here
-                Toast.makeText(getApplicationContext(),"customer has accepted",Toast.LENGTH_SHORT).show();
+                //Add logic here
+                Toast.makeText(getApplicationContext(), "customer has accepted", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
 //                Intent go = new Intent(ChatActivity.this, ForumActivity.class);
 //                go.putExtra("autoOpened", true);
@@ -838,7 +849,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent go = new Intent(ChatActivity.this , ChooserActivity.class);
+                Intent go = new Intent(ChatActivity.this, ChooserActivity.class);
                 startActivity(go);
                 finish();
             }
@@ -846,8 +857,9 @@ public class ChatActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
     //Method to connect to google Play billing
-    private void connectToGooglePlayBilling(){
+    private void connectToGooglePlayBilling() {
         billingClient.startConnection(
                 new BillingClientStateListener() {
                     @Override
@@ -857,29 +869,30 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                    if (billingResult.getResponseCode()== BillingClient.BillingResponseCode.OK){
-                        getServiceDetails();
-                    }
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            getServiceDetails();
+                        }
                     }
                 }
         );
     }
-    private void getServiceDetails(){
-        List <String> productIds = new ArrayList<>();
-        productIds.add("Billing_Service_5");
+
+    private void getServiceDetails() {
+        List<String> productIds = new ArrayList<>();
+        productIds.add("billing_service_5");
         SkuDetailsParams getProductsDetailsQuery = SkuDetailsParams
-                                    .newBuilder()
-                                    .setSkusList(productIds)
-                                    .setType(BillingClient.SkuType.INAPP)
-                                    .build();
+                .newBuilder()
+                .setSkusList(productIds)
+                .setType(BillingClient.SkuType.INAPP)
+                .build();
         billingClient.querySkuDetailsAsync(
                 getProductsDetailsQuery,
                 new SkuDetailsResponseListener() {
                     @Override
                     public void onSkuDetailsResponse(@NonNull BillingResult billingResult, @Nullable List<SkuDetails> list) {
-                        if (billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK &&
-                             list != null ){
-                          itemInfo =list.get(0);
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
+                                list != null) {
+                            itemInfo = list.get(0);
                         }
                     }
                 }
